@@ -45,7 +45,7 @@ public class SignalRController {
             .asEmpty();
     }
 
-    private String generateJwt(String endpoint, String userId) {
+    private String generateJwt(String audience, String userId) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
         long nowMillis = System.currentTimeMillis();
@@ -58,7 +58,7 @@ public class SignalRController {
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
         JwtBuilder builder = Jwts.builder()
-            .setAudience(endpoint)
+            .setAudience(audience)
             .setIssuedAt(now)
             .setExpiration(exp)
             .signWith(signingKey);
