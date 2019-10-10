@@ -6,7 +6,7 @@ import java.util.Date;
 
 import javax.crypto.spec.SecretKeySpec;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.jsonwebtoken.JwtBuilder;
@@ -23,7 +23,7 @@ public class SignalRController {
     private String signalRServiceKey = "";
     // https://foo.service.signalr.net
     private String signalRServiceBaseEndpoint = "";
-    private String hubName = "foo";
+    private String hubName = "chat";
 
     @PostMapping("/signalr/negotiate")
     public SignalRConnectionInfo negotiate() {
@@ -33,15 +33,15 @@ public class SignalRController {
         return new SignalRConnectionInfo(hubUrl, accessKey);
     }
 
-    @PostMapping("/sendmessage")
-    public void sendMessage(@RequestParam String message) {
+    @PostMapping("/api/messages")
+    public void sendMessage(@RequestBody ChatMessage message) {
         String hubUrl = signalRServiceBaseEndpoint + "/api/v1/hubs/" + hubName;
         String accessKey = generateJwt(hubUrl, null);
 
         Unirest.post(hubUrl)
             .header("Content-Type", "application/json")
             .header("Authorization", "Bearer " + accessKey)
-            .body(new SignalRMessage("newMessage", new String[] { message }))
+            .body(new SignalRMessage("newMessage", new Object[] { message }))
             .asEmpty();
     }
 

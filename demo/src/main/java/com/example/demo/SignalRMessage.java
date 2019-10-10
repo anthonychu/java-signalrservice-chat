@@ -6,9 +6,9 @@ package com.example.demo;
 public class SignalRMessage {
 
     public String target;
-    public String[] arguments;
+    public Object[] arguments;
 
-    public SignalRMessage(String target, String[] arguments) {
+    public SignalRMessage(String target, Object[] arguments) {
         this.target = target;
         this.arguments = arguments;
     }
