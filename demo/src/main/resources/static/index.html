@@ -6,6 +6,16 @@
   <title>Document</title>
 </head>
 <body>
-  hi
+  <script src="https://cdn.jsdelivr.net/npm/@microsoft/signalr@3.0.0/dist/browser/signalr.min.js"></script>
+  <script>
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("/signalr")
+      .withAutomaticReconnect()
+      .build()
+
+    connection.on('newMessage', console.log)
+
+    connection.start()
+  </script>
 </body>
 </html>
